@@ -1,7 +1,7 @@
 class Type():
 
     # Constructor
-    def __init__(self,word):
+    def __init__(self, word):
         self.__word = list(word)
         self.__head = 0
 
@@ -16,7 +16,7 @@ class Type():
         return self.__word
 
     # Write the symbol on the list
-    def write(self,symbol):
+    def write(self, symbol):
         self.word[self.head] = symbol
 
 
