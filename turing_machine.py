@@ -2,7 +2,7 @@ from tape import Tape
 from status import Status
 from transfers import Transfers
 
-class TuringMachine():
+class Turing_Machine():
     
     # Constructor
     def __init__(self, word, initial, acceptance, rejection):
