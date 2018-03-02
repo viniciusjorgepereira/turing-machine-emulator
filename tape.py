@@ -1,4 +1,4 @@
-class Type():
+class Tape():
 
     # Constructor
     def __init__(self, word):
