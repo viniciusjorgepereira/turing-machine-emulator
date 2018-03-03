@@ -12,7 +12,7 @@
 4x 0 x r 0
 4x 1 y r 0
 4x _ x r 0
-4x * * l 4x    ; skip the x/y's
+4x * * l 4x
 4y 0 1 * 5
 4y 1 0 l 4y
 4y _ 1 * 5
