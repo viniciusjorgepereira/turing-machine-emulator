@@ -34,12 +34,10 @@ class Turing_Machine():
         self.__tape = list(word)
 
     def edit_tape(self, index, write):
-        if (index >= len(self.tape)):
-            self.tape.append(write)
+        if (index >= 0 and index < len(self.tape)):
+            self.tape[index] = write
         elif (index < 0):
             self.tape.insert(0, write)
-        else:
-            self.tape[index] = write
 
     @property
     def status(self):
@@ -54,7 +52,11 @@ class Turing_Machine():
         return self.__head
 
     def move_head(self, direction):
-        if (direction == "l"):
+        if direction == "*" and self.head < 0:
+            self.__head += 1
+        elif (direction == "*" and self.head >= len(self.tape)):
+            self.__head -= 1
+        elif (direction == "l"):
             self.__head -= 1
         elif (direction == "r"):
             self.__head += 1
@@ -77,6 +79,9 @@ class Turing_Machine():
         while (self.current != self.acceptance and self.current != self.rejeccion):
             aux = []
             if (self.head  >= len(self.tape) or self.head < 0):
+                #if (self.head == -1):
+                 #   aux = self.status[self.current].get_transition(self.tape[0])
+                #else:
                 aux = self.status[self.current].get_transition("_")
             else:
                 aux = self.status[self.current].get_transition(self.tape[self.head])
@@ -86,4 +91,3 @@ class Turing_Machine():
             self.move_head(aux[1])
             self.add_steps()
             self.edit_current(aux[2])
-            print(self.tape, self.head, self.current)
