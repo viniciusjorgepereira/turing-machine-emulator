@@ -2,92 +2,109 @@ import sys
 import pdb
 from time import sleep
 
-if len(sys.argv) < 6:
+if len(sys.argv) < 4:
     print("Devem ser passados os seguintes parametros\n"
-          "python3 mapping.py <arquivo_turing.txt> <entrada_maquina> <time_sleep> "
+          "python3 mapping.py <arquivo_turing.txt>"
           "<mode (d ou n)> <breakpoint (passos)>")
 else:
-    tempo = int(sys.argv[3])
-    mode = sys.argv[4]
-    breakpoint = int(sys.argv[5])
-    texto = open(sys.argv[1]).readlines()
-    texto = [i for i in texto if i != "\n"]
-    texto = [i for i in texto if i[0] != ";"]
-    for i in range(len(texto)):
-        if ";" in texto[i]:
-            texto[i] = " ".join(texto[i].split(" ")[:5])
+    castor = False
+    mode = sys.argv[2]
+    breakpoint = int(sys.argv[3])
+    comandos = open(sys.argv[1]).readlines()
+    
+    if "busy" in  "".join(comandos): castor = True
+    comandos = [i for i in comandos if i != "\n"]
+    comandos = [i for i in comandos if i[0] != ";"]
+    for i in range(len(comandos)):
+        if ";" in comandos[i]:
+            comandos[i] = " ".join(comandos[i].split(" ")[:5])
 
-    texto = [i.replace("\n", "") for i in texto]
+    comandos = [i.replace("\n", "") for i in comandos]
 
-    texto = [i.split() for i in texto]
+    comandos = [i.split() for i in comandos]
 
     estados = {}
 
-    for i in texto:
-        estados[(i[0], i[1])] = i[2:]
-
-    entrada = sys.argv[2].replace("-", " ")
+    for com in comandos:
+        estados[com[0]] = {}
+    
+    for com in comandos:
+        estados[com[0]]['mov'] = {}
+        
+    for com in comandos:
+        estados[com[0]]['mov'][com[1]] = {}
+        
+    for com in comandos:
+        estados[com[0]]['mov'][com[1]][com[2]] = {com[3]: com[4]}
+        
+    
+    entrada = input("entrada: ")
+    print()
+    
+    if entrada == "":
+        entrada = "_"
+    else:
+        entrada = entrada.strip()
     fita = list(entrada)
 
-    #inicialmente
     head = 0
     passos = 0
-
-
-    def set_head(direcao):
+    
+    def set_ler(estados, estado, fita, head):
+        valor = fita[head]
+        if valor in estados[estado]['mov']:
+            return valor
+        else:
+            return "*"
+            
+    def get_escrever(estados, estado, ler):
+        return [*estados[estado]['mov'][ler]][0]
+            
+    def get_direcao(estados, estado, ler, escrever):
+        return [*estados[estado]['mov'][ler][escrever]][0]
+    
+    def write_fita(fita, head, simbolo):
+        if simbolo != "*":
+            fita[head] = simbolo
+            
+    def set_fita(fita, head):
+        if head >= len(fita):
+            fita.append("_")
+        elif head < 0:
+            fita.insert(0, "_")
+            return 1
+        return 0
+            
+    def set_head(direcao, fita, head):
         if direcao == "r":
             return 1
         elif direcao == "l":
             return -1
+        
         return 0
-
-    def set_atual(estado, estados, fita, head):
-        disponiveis = [i[1] for i in estados if i[0] == estado]
-
-        if len(disponiveis) == 1:
-            status = (estado, disponiveis[0])
-        elif fita[head].isnumeric():
-            valor = fita[head]
-            if not valor in disponiveis:
-                status = (estado, "*")
-            else:
-                status = (estado, fita[head])
-        else:
-            if fita[head] == "_":
-                status = (estado, "_")
-            else:
-                status = (estado, "*")
-
-        return status
-
-    estadoinicial = (texto[0][0], fita[head])
-    atual = set_atual(estadoinicial[0], estados, fita, head)
-
-    accept = False
+                
+    def get_estado(estado, estados, ler, escrever, direcao):
+        return estados[estado]['mov'][ler][escrever][direcao]
+    
+    estado = comandos[0][0]
     while True:
         if mode == "d" and passos == breakpoint:
-            pdb.set_trace()
-
-        print("Atual: %s\nFita: %s\nPassos: %s" % (atual[0], "".join(fita).replace("_", ""), passos))
+            pdb.set_trace()    
+        
+        
+        print("Atual: %s\nFita: '%s'\nHead: %d\nPassos: %s" % (estado, "".join(fita).replace("_", " "), head, passos))
         print()
 
-        if atual[0] in ["halt", "halt-accept", "halt-reject"]:
+        if estado in ["halt", "halt-accept", "halt-reject"]:
             break
-
-
-        escrever = estados[atual][0]
-        if escrever != '*':
-            fita[head] = escrever
-
-        prox_estado = estados[atual][2]
-        head += set_head(estados[atual][1])
-
-        if head >= len(fita):
-            fita.append("_")
-        if head < 0:
-            fita.insert(0, "_")
-            head = 0
-        atual = set_atual(prox_estado, estados, fita, head)
+        
+        ler = set_ler(estados, estado, fita, head)
+        escrever = get_escrever(estados, estado, ler)
+        write_fita(fita, head, escrever)
+        direcao = get_direcao(estados, estado, ler, escrever)
+        head += set_head(direcao, fita, head)
+        head += set_fita(fita, head)
+        
+        estado = get_estado(estado, estados, ler, escrever, direcao)
+        
         passos += 1
-        sleep(tempo)
-
