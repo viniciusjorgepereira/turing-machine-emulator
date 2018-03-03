@@ -1,6 +1,4 @@
-from tape import Tape
 from status import Status
-from transfers import Transfers
 
 class Turing_Machine():
     
@@ -36,8 +34,12 @@ class Turing_Machine():
     def edit_tape(self, index, write):
         if (index >= 0 and index < len(self.tape)):
             self.tape[index] = write
-        elif (index < 0):
+        elif (index < 0 or len(self.tape) == 0):
             self.tape.insert(0, write)
+            self.__head += 1
+        elif index >= len(self.tape):
+            self.tape.append(write)
+
 
     @property
     def status(self):
@@ -52,14 +54,14 @@ class Turing_Machine():
         return self.__head
 
     def move_head(self, direction):
-        if direction == "*" and self.head < 0:
-            self.__head += 1
-        elif (direction == "*" and self.head >= len(self.tape)):
+        if direction == "l":
             self.__head -= 1
-        elif (direction == "l"):
-            self.__head -= 1
-        elif (direction == "r"):
+        elif direction == "r":
             self.__head += 1
+        if self.head < -1:
+            self.__head += 1
+        elif self.head > len(self.tape):
+            self.__head = len(self.tape)
 
     def add_status(self, name, read, write, direction, next):
         if (self.status.keys().__contains__(name) == False):
@@ -77,17 +79,15 @@ class Turing_Machine():
 
     def analyze(self):
         while (self.current != self.acceptance and self.current != self.rejeccion):
+            print (self.tape)
             aux = []
             if (self.head  >= len(self.tape) or self.head < 0):
-                #if (self.head == -1):
-                 #   aux = self.status[self.current].get_transition(self.tape[0])
-                #else:
                 aux = self.status[self.current].get_transition("_")
             else:
                 aux = self.status[self.current].get_transition(self.tape[self.head])
             if (aux[0] != "*"):
                 self.edit_tape(self.head, aux[0])
-
-            self.move_head(aux[1])
+            if aux[1] != "*":
+                self.move_head(aux[1])
             self.add_steps()
             self.edit_current(aux[2])
