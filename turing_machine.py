@@ -32,9 +32,9 @@ class Turing_Machine():
         self.__tape = list(word)
 
     def edit_tape(self, index, write):
-        if (index >= 0 and index < len(self.tape)):
+        if 0 <= index < len(self.tape):
             self.tape[index] = write
-        elif (index < 0 or len(self.tape) == 0):
+        elif index < 0 or len(self.tape) == 0:
             self.tape.insert(0, write)
             self.__head += 1
         elif index >= len(self.tape):
@@ -56,16 +56,18 @@ class Turing_Machine():
     def move_head(self, direction):
         if direction == "l":
             self.__head -= 1
+            if self.head < -1:
+                self.__head += 1
+                self.__tape.insert(0, "_")
         elif direction == "r":
             self.__head += 1
-        if self.head < -1:
-            self.__head += 1
-        elif self.head > len(self.tape):
-            self.__head = len(self.tape)
+            if self.head >= len(self.tape):
+                self.tape.append("_")
 
     def add_status(self, name, read, write, direction, next):
-        if (self.status.keys().__contains__(name) == False):
+        if not self.status.keys().__contains__(name):
             self.status[name] = Status()
+
         self.status[name].add_transition(read, write, direction, next)
 
     def add_word(self, word):
@@ -78,15 +80,16 @@ class Turing_Machine():
         self.__current = current
 
     def analyze(self):
-        while (self.current != self.acceptance and self.current != self.rejeccion):
-            print (self.tape)
+        while self.current != self.acceptance and self.current != self.rejeccion:
+            print ("".join(self.tape).strip("_").replace("_", " "))
             aux = []
-            if (self.head  >= len(self.tape) or self.head < 0):
+            if self.head >= len(self.tape) or self.head < 0:
                 aux = self.status[self.current].get_transition("_")
             else:
                 aux = self.status[self.current].get_transition(self.tape[self.head])
-            if (aux[0] != "*"):
+            if aux[0] != "*":
                 self.edit_tape(self.head, aux[0])
+
             if aux[1] != "*":
                 self.move_head(aux[1])
             self.add_steps()
