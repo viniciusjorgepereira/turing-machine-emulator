@@ -1,4 +1,5 @@
-# turing-machine-emulator
+# Turing Machine Emulator
+### Turinha v1.0
 
 ## Cássio Eduardo
 ## Geovane Silva
