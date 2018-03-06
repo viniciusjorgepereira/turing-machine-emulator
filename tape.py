@@ -6,10 +6,13 @@ class Tape:
 	@property
 	def tape(self):
 		return self.__tape
+
+	def add_word(self, word):
+		self.__tape = list(word)
 	
 	def __str__(self):
-		return "".join(self.tape).strip("_").replace("_", " ")
-
+		return "".join(self.tape).strip("_").replace("_", " ").strip()
+    
 	def size(self):
 		return len(self.tape)
 
@@ -20,10 +23,8 @@ class Tape:
 		self.tape.append(write)
 
 	def edit_tape(self, index, write):
-		if 0 <= index < len(self.tape):
-			self.tape[index] = write
-		elif index < 0 or len(self.tape) == 0:
-			self.add_first(0, write)
-		elif index >= len(self.tape):
-			self.add_last(write)
+		self.tape[index] = write
+
+	def get_symbol(self, index):
+		return self.tape[index]
 
