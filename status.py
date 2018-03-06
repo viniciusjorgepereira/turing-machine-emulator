@@ -15,7 +15,7 @@ class Status():
         result = []
         if self.transitions.keys().__contains__(character):
             result = self.transitions[character]
-        elif character == " ":
+        elif character == " " and self.transitions.keys().__contains__("_"):
             result = self.transitions["_"]
         else:
             result = self.transitions["*"]
