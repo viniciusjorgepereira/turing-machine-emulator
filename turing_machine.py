@@ -3,9 +3,9 @@ from status import Status
 class Turing_Machine():
     
     # Constructor
-    def __init__(self, initial, acceptance, rejection):
-        self.__acceptance = acceptance
-        self.__rejeccion = rejection
+    def __init__(self, initial):
+        self.__acceptance = ["halt", "halt-accept"]
+        self.__rejeccion = ["halt-reject"]
         self.__current = initial
         self.__tape = []
         self.__status = {}
@@ -32,13 +32,8 @@ class Turing_Machine():
         self.__tape = list(word)
 
     def edit_tape(self, index, write):
-        if 0 <= index < len(self.tape):
-            self.tape[index] = write
-        elif index < 0 or len(self.tape) == 0:
-            self.tape.insert(0, write)
-            self.__head += 1
-        elif index >= len(self.tape):
-            self.tape.append(write)
+        self.add_steps()
+        self.tape[index] = write
 
 
     @property
@@ -65,7 +60,7 @@ class Turing_Machine():
                 self.tape.append("_")
 
     def add_status(self, name, read, write, direction, next):
-        if not self.status.keys().__contains__(name):
+        if name not in self.status.keys():
             self.status[name] = Status()
 
         self.status[name].add_transition(read, write, direction, next)
@@ -80,17 +75,24 @@ class Turing_Machine():
         self.__current = current
 
     def analyze(self):
-        while self.current != self.acceptance and self.current != self.rejeccion:
-            print ("".join(self.tape).strip("_").replace("_", " "))
+        while self.current not in self.acceptance and self.current not in self.rejeccion:
+            print ("".join(self.tape).strip("_").replace("_", " "), self.current)
             aux = []
             if self.head >= len(self.tape) or self.head < 0:
                 aux = self.status[self.current].get_transition("_")
             else:
                 aux = self.status[self.current].get_transition(self.tape[self.head])
             if aux[0] != "*":
-                self.edit_tape(self.head, aux[0])
+                if 0 <= self.head < len(self.tape):
+                    self.edit_tape(self.head, aux[0])
+                elif self.head < 0 or len(self.tape) == 0:
+                    self.tape.insert(0, aux[0])
+                    self.__head += 1
+                elif self.head >= len(self.tape):
+                    self.tape.append(aux[0])
 
             if aux[1] != "*":
                 self.move_head(aux[1])
+
             self.add_steps()
             self.edit_current(aux[2])
