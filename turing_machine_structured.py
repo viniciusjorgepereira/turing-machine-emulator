@@ -70,7 +70,7 @@ def set_head(direcao, fita, head):
 def get_estado(estado, estados, ler, escrever, direcao):
     return estados[estado]['mov'][ler][escrever][direcao]
 
-def console_log(estado, fita, head, passos, speed=0.05):
+def console_log(estado, fita, head, passos, speed):
     tamanho = len(fita) + 6
     tracos = "-" * (tamanho//2)
     cab = tracos + "Tape" + tracos
@@ -101,7 +101,7 @@ def console_log(estado, fita, head, passos, speed=0.05):
     if estado not in ["halt", "halt-accept", "halt-reject"]:
         os.system('cls' if os.name == 'nt' else 'clear')
 
-def turing_machine(entrada, arquivo_de_configuracao, speed):
+def turing_machine(entrada, arquivo_de_configuracao, speed=0.05):
     comandos = get_comandos(arquivo_de_configuracao)
 
     estados = get_estados(comandos)
