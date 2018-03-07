@@ -70,7 +70,38 @@ def set_head(direcao, fita, head):
 def get_estado(estado, estados, ler, escrever, direcao):
     return estados[estado]['mov'][ler][escrever][direcao]
 
-def turing_machine(entrada, arquivo_de_configuracao):
+def console_log(estado, fita, head, passos, speed):
+    tamanho = len(fita) + 6
+    tracos = "-" * (tamanho//2)
+    cab = tracos + "Tape" + tracos
+    m = " " * (len(cab))
+    b = "-" * len(cab)
+    fit = "".join(fita).replace("_", " ")
+    h = [" " for i in fita]
+    h[head] = "^"
+    header = "".join(h)
+    tape = [cab,m,fit,header,b]
+    just = len(cab)+12
+    
+    print((" " * 12 + tape[0]).center(just))
+    print((" " * 12 + tape[1]).center(just))
+    print((" " * 12 + tape[2]).center(just))
+    print((" " * 12 + tape[3]).center(just))
+    print((" " * 12 + tape[4]).center(just))
+    print()
+    
+    status = ["-Current state-", estado, "---------------"]
+    steps = ["-Steps-", str(passos), "-------"]
+    
+    print(status[0].ljust(0), steps[0].rjust(20))
+    print(status[1].center(14), steps[1].rjust(19))
+    print(status[2].ljust(0), steps[2].rjust(20))
+ 
+    sleep(speed)
+    if estado not in ["halt", "halt-accept", "halt-reject"]:
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+def turing_machine(entrada, arquivo_de_configuracao, speed=0):
     comandos = get_comandos(arquivo_de_configuracao)
 
     estados = get_estados(comandos)
@@ -86,8 +117,7 @@ def turing_machine(entrada, arquivo_de_configuracao):
     passos = 0
     estado = comandos[0][0]
     while True:
-        print("Atual: %s\nFita: '%s'\nHead: %d\nPassos: %s" % (estado, "".join(fita).replace("_", " "), head, passos))
-        print()
+        console_log(estado, fita, head, passos, speed)
 
         if estado in ["halt", "halt-accept", "halt-reject"]:
             break
@@ -122,7 +152,7 @@ def testando():
                 ["[ L+,0R.,1R.!1L+,1L+,0L.:,0L.,1L.:]1011"]]
     
     #adicao
-    assert turing_machine(entradas[0][0], files[0]) == ["1100001", "halt", 135]
+    assert turing_machine(entradas[0][0], files[0], ) == ["1100001", "halt", 135]
     
     #assert turing_machine(entradas[1][], files[1]) - nao para
     
