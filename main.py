@@ -1,16 +1,13 @@
-from turing_machine import Turing_Machine
+from machine import Machine
 
-maq = Turing_Machine("0")
+archive = open("files_for_machine/palindromos.txt")
+transitions = [i.split() for i in archive if i != "\n" and i[0] != ";"]
 
-maq.add_word("1 1")
-texto = open("files_for_machine/adicao_binaria.txt")
-transitions = [i for i in texto if i != "\n"]
-transitions = [i.split()[:5] for i in transitions if i[0] != ";"]
+machine = Machine(transitions[0][0])
+machine.add_word(str(input()))
 
 for i in transitions:
-    maq.add_status(i[0], i[1], i[2], i[3], i[4])
+    machine.add_status(i[0], i[1], i[2], i[3], i[4])
 
-maq.analyze()
-print("".join(maq.tape).strip("_").replace("_", " "))
-print (maq.steps)
-print(maq.current)
+machine.analyze()
+print(machine.steps, machine.tape, machine.current)
