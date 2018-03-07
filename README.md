@@ -1,6 +1,10 @@
-# turing-machine-emulator
+# Turing Machine Emulator
+##### Turinha v1.0
 
-## Cássio Eduardo
-## Geovane Silva
-## Sammara Nunes
-## Vinicius Jorge Pereira
+
+### Cássio Eduardo
+### Gabriel Almeida
+### Geovane Silva
+### Marcelo Gabriel
+### Sammara Nunes
+### Vinicius Jorge Pereira

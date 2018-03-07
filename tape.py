@@ -1,30 +1,30 @@
-class Tape():
+class Tape:
+	
+	def __init__(self):
+		self.__tape = []
 
-    # Constructor
-    def __init__(self, word):
-        self.__word = list(word)
-        self.__head = 0
+	@property
+	def tape(self):
+		return self.__tape
 
-    # Get head
-    @property
-    def head(self):
-        return self.__head
+	def add_word(self, word):
+		self.__tape = list(word)
+	
+	def __str__(self):
+		return "".join(self.tape).strip("_").replace("_", " ").strip()
+    
+	def size(self):
+		return len(self.tape)
 
-    # Get word
-    @property
-    def word(self):
-        return self.__word
+	def add_first(self, write):
+		self.tape.insert(0, write)
 
-    # Write the symbol on the list
-    def write(self, symbol):
-        self.word[self.head] = symbol
+	def add_last(self, write):
+		self.tape.append(write)
 
+	def edit_tape(self, index, write):
+		self.tape[index] = write
 
-    # Move your head to the left
-    def move_left(self):
-        self.head += 1
+	def get_symbol(self, index):
+		return self.tape[index]
 
-
-    # Move your head to the right
-    def move_right(self):
-        self.head -= 1

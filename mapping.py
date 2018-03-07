@@ -140,7 +140,9 @@ def testando():
              'castor_ocupado.txt', 'checa_parentes.txt', 'multiplicacao_binaria.txt',
              'numeros_primos.txt', 'palindromos.txt', 'pilha.txt', 'universal_turing_machine.txt']
     
-    entradas = [["110110 101011"], 
+    files = ['files_for_machine/' + i for i in files]
+    
+    entradas = [["110110 101011", "10 10"], 
                 [], 
                 ["10110"],
                 [""], 
@@ -152,7 +154,8 @@ def testando():
                 ["[ L+,0R.,1R.!1L+,1L+,0L.:,0L.,1L.:]1011"]]
     
     #adicao
-    assert turing_machine(entradas[0][0], files[0], ) == ["1100001", "halt", 135]
+    assert turing_machine(entradas[0][0], files[0]) == ["1100001", "halt", 135]
+    assert turing_machine(entradas[0][1], files[0]) == ["100", "halt", 30]
     
     #assert turing_machine(entradas[1][], files[1]) - nao para
     
