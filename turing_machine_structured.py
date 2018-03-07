@@ -1,5 +1,5 @@
 import sys
-import pdb
+import os
 from time import sleep
 
 def get_comandos(arquivo):
