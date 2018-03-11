@@ -1,5 +1,6 @@
 from turing_machine_structured import turing_machine
-from time import sleep # tirar
+from time import sleep
+
 
 def testando():
     files = ['adicao_binaria.txt', 'alan_turing.txt', 'binario_decimal.txt', 
@@ -28,6 +29,7 @@ def testando():
     assert turing_machine(entradas[0][2], files[0]) != ["100010", "halt", 96]
     sleep(3)
     
+
     #assert turing_machine(entradas[1][], files[1]) - nao para
     
     #binario decimal
@@ -63,7 +65,17 @@ def testando():
     #Testando multiplicacao por 1
     assert turing_machine(entradas[5][3], files[5]) == ["101", "halt", 189]
     sleep(3)
+
     
+    #castor ocupado
+    assert turing_machine(entradas[3][0], files[3]) == ["1 111111111111", "halt", 108]
+    sleep(3)
+    #checa parenteses
+    assert turing_machine(entradas[4][0], files[4]) == [":)", "halt-accept", 217]
+    sleep(3)
+    #multiplicacao binaria
+    assert turing_machine(entradas[5][0], files[5]) == ["101010010", "halt", 980]
+    sleep(3)
     #numeros_primos
     #Testando o numero 5
     assert turing_machine(entradas[6][0], files[6]) == ["101 is prime!", "halt", 1574]
@@ -96,6 +108,12 @@ def testando():
     assert turing_machine(entradas[8][0], files[8]) == ["1", "halt", 141]
     
     
+    #palindromos
+    assert turing_machine(entradas[7][0], files[7]) == [":)", "halt-accept", 38]
+    sleep(3)
+    #pilha
+    assert turing_machine(entradas[8][0], files[8]) == ["1", "halt", 141]
+    sleep(3)
     #universal_turing_machine
     assert turing_machine(entradas[9][0], files[9]) == ["[ L+,0R.,1R.:1L+,1L+,0L.:,0L.,1L.!] 1100", "halt", 1974]
     sleep(3)
