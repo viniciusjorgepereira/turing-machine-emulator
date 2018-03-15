@@ -51,6 +51,7 @@ class Machine():
             self.__head += 1
             if self.head >= self.tape.size():
                 self.tape.add_last("_")
+                self.__head = self.tape.size() - 1
 
     def add_status(self, name, read, write, direction, next):
         if name not in self.status.keys():
