@@ -61,11 +61,11 @@ def set_read(statuses, status, tape, head):
     :return: The tape's values
     """
 
-        value = tape[head]
-        if value in statuses[status]['mov']:
-            return value
-        else:
-            return "*"
+    value = tape[head]
+    if value in statuses[status]['mov']:
+        return value
+    else:
+        return "*"
             
 def get_write(statuses, status, read):
     """
@@ -169,13 +169,13 @@ def console_log(status, tape, head, steps):
     :return:
     """
 
-    tamanho = len(tape) + 6
-    tracos = "-" * (tamanho//2)
+    size = len(tape) + 6
+    tracos = "-" * (size//2)
     cab = tracos + "Tape" + tracos
     m = " " * (len(cab))
     b = "-" * len(cab)
-    fit = "".join(fita).replace("_", " ")
-    h = [" " for i in fita]
+    fit = "".join(tape).replace("_", " ")
+    h = [" " for i in tape]
     h[head] = "^"
     header = "".join(h)
     tape = [cab,m,fit,header,b]
@@ -224,7 +224,7 @@ def turing_machine(inpt, conf_file, mode, speed):
     tape = list(inpt)
     head = 0
     steps = 0
-    status = comandos[0][0]
+    status = commands[0][0]
 
     while True:
         console_log(status, tape, head, steps)
