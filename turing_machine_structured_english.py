@@ -54,7 +54,7 @@ def set_read(statuses, status, tape, head):
     It sets and returns the values on the tape
 
     :param statuses: Statues of turing machine
-    :param status: Each of status of turing machine
+    :param status: Each of statuses of turing machine
     :param tape: Values on the tape's turing machine
     :param head: Head's turing machine value
 
@@ -68,16 +68,56 @@ def set_read(statuses, status, tape, head):
             return "*"
             
 def get_write(statuses, status, read):
+    """
+    It returns the turing machine's write
+
+    :param statuses: Statuses of turing machine
+    :param status: Each of statuses of turing machine
+    :param read: Reading by turing machine
+
+    :return: The curretly writing
+    """
+
     return [*statuses[status]['mov'][read]][0]
         
-def get_direcao(estados, estado, ler, escrever):
-    return [*estados[estado]['mov'][ler][escrever]][0]
+def get_way(statuses, status, read, write):
+    """
+    It returns the correct way of turing machine
+
+    :param statuses: Statuses of turing machine
+    :param status: Each of statuses of turing machine
+    :param read: Reading by turing machine
+    :param write: Writing by turing machine
+
+    :return: The ways of turing machine
+    """
+
+    return [*statuses[status]['mov'][read][write]][0]
 
 def write_tape(tape, head, symbol):
+    """
+
+
+    :param tape:
+    :param head:
+    :param symbol:
+
+    :return:
+    """
+
     if symbol != "*":
         tape[head] = symbol
         
 def set_tape(tape, head):
+    """
+    It writes on the tape
+
+    :param tape: Turing machine's tape
+    :param head: Head of turing machine
+
+    :return: The curretly writing on the tape
+    """
+
     if head >= len(tape):
         tape.append("_")
     elif head < 0:
@@ -85,18 +125,50 @@ def set_tape(tape, head):
         return 1
     return 0
         
-def set_head(direcao, tape, head):
-    if direcao == "r":
+def set_head(way, tape, head):
+    """
+
+
+    :param way:
+    :param tape:
+    :param head:
+
+    :return:
+    """
+
+    if way == "r":
         return 1
-    elif direcao == "l":
+    elif way == "l":
         return -1
     
     return 0
             
-def get_status(status, statuses, read, write, direcao):
-    return statuses[status]['mov'][read][write][direcao]
+def get_status(status, statuses, read, write, way):
+    """
+
+    :param status:
+    :param statuses:
+    :param read:
+    :param write:
+    :param way:
+
+    :return:
+    """
+
+    return statuses[status]['mov'][read][write][way]
 
 def console_log(status, tape, head, steps):
+    """
+
+
+    :param status:
+    :param tape:
+    :param head:
+    :param steps:
+
+    :return:
+    """
+
     tamanho = len(tape) + 6
     tracos = "-" * (tamanho//2)
     cab = tracos + "Tape" + tracos
@@ -128,6 +200,17 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def turing_machine(inpt, conf_file, mode, speed):
+    """
+
+
+    :param inpt:
+    :param conf_file:
+    :param mode:
+    :param speed:
+
+    :return:
+    """
+
     commands = get_commands(conf_file)
 
     statuses = get_statuses(commands)
@@ -140,8 +223,8 @@ def turing_machine(inpt, conf_file, mode, speed):
     
     tape = list(inpt)
     head = 0
-    passos = 0
-    estado = comandos[0][0]
+    steps = 0
+    status = comandos[0][0]
 
     while True:
         console_log(status, tape, head, steps)
@@ -156,13 +239,13 @@ def turing_machine(inpt, conf_file, mode, speed):
             clear_screen()
         
         read = set_read(statuses, status, tape, head)
-        write = get_write(estados, estado, ler)
+        write = get_write(statuses, status, read)
         write_tape(tape, head, write)
-        direcao = get_direcao(estados, estado, ler, escrever)
-        head += set_head(direcao, fita, head)
+        way = get_way(statuses, status, read, write)
+        head += set_head(way, tape, head)
         head += set_tape(tape, head)
         
-        status = get_status(status, statuses, read, write, direcao)
+        status = get_status(status, statuses, read, write, way)
         
         steps += 1
         
