@@ -70,7 +70,7 @@ def set_head(direcao, fita, head):
 def get_estado(estado, estados, ler, escrever, direcao):
     return estados[estado]['mov'][ler][escrever][direcao]
 
-def console_log(estado, fita, head, passos, speed, modo):
+def console_log(estado, fita, head, passos):
     tamanho = len(fita) + 6
     tracos = "-" * (tamanho//2)
     cab = tracos + "Tape" + tracos
@@ -97,13 +97,11 @@ def console_log(estado, fita, head, passos, speed, modo):
     print(status[1].center(14), steps[1].rjust(19))
     print(status[2].ljust(0), steps[2].rjust(20))
  
-    if modo == "n":
-        sleep(speed)
-        
-    if estado not in ["halt", "halt-accept", "halt-reject"]:
-        os.system('cls' if os.name == 'nt' else 'clear')
+def clear_screen():        
+    #if estado not in ["halt", "halt-accept", "halt-reject"]:
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-def turing_machine(entrada, arquivo_de_configuracao, modo, speed=0.05):
+def turing_machine(entrada, arquivo_de_configuracao, modo, speed):
     comandos = get_comandos(arquivo_de_configuracao)
 
     estados = get_estados(comandos)
@@ -120,13 +118,16 @@ def turing_machine(entrada, arquivo_de_configuracao, modo, speed=0.05):
     estado = comandos[0][0]
 
     while True:
-        console_log(estado, fita, head, passos, speed, modo)
-
-        if modo == "p":
+        console_log(estado, fita, head, passos)
+        if modo == "n":
+            sleep(speed)
+        else:
             input()
 
         if estado in ["halt", "halt-accept", "halt-reject"]:
             break
+        else:
+            clear_screen()
         
         ler = set_ler(estados, estado, fita, head)
         escrever = get_escrever(estados, estado, ler)
@@ -142,8 +143,29 @@ def turing_machine(entrada, arquivo_de_configuracao, modo, speed=0.05):
     return ["".join(fita).strip("_").replace("_", " "), estado, passos]
         
 if __name__ == "__main__":
-    file_config = sys.argv[1]
-    speed = float(sys.argv[2])
-    modo = sys.argv[3]
+    def get_parametros(param):
+        parametros = {}
+        parametros["file"] = param[1]
+        if len(param) == 2:
+            parametros["speed"] = 0.05
+            parametros["modo"] = "n"
+        elif len(param) == 4:
+            parametros["speed"] = float(param[2])
+            parametros["modo"] = param[3]
+        elif len(param) == 3 and param[2].isdigit():
+            parametros["speed"] = float(param[2])
+            parametros["modo"] = "n"
+        else:
+            parametros["speed"] = 0.05
+            parametros["modo"] = param[2]
+        return parametros
+
+
+    parametros = get_parametros(sys.argv)
     entrada = input("Entrada > ")
+    file_config = parametros["file"]
+    modo = parametros["modo"]
+    speed = parametros["speed"]
+    
     turing_machine(entrada, file_config, modo, speed)
+    
