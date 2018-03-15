@@ -70,7 +70,7 @@ def set_head(direcao, fita, head):
 def get_estado(estado, estados, ler, escrever, direcao):
     return estados[estado]['mov'][ler][escrever][direcao]
 
-def console_log(estado, fita, head, passos, speed):
+def console_log(estado, fita, head, passos, speed, modo):
     tamanho = len(fita) + 6
     tracos = "-" * (tamanho//2)
     cab = tracos + "Tape" + tracos
@@ -97,11 +97,13 @@ def console_log(estado, fita, head, passos, speed):
     print(status[1].center(14), steps[1].rjust(19))
     print(status[2].ljust(0), steps[2].rjust(20))
  
-    sleep(speed)
+    if modo == "n":
+        sleep(speed)
+        
     if estado not in ["halt", "halt-accept", "halt-reject"]:
         os.system('cls' if os.name == 'nt' else 'clear')
 
-def turing_machine(entrada, arquivo_de_configuracao, speed=0.05):
+def turing_machine(entrada, arquivo_de_configuracao, modo, speed=0.05):
     comandos = get_comandos(arquivo_de_configuracao)
 
     estados = get_estados(comandos)
@@ -116,8 +118,12 @@ def turing_machine(entrada, arquivo_de_configuracao, speed=0.05):
     head = 0
     passos = 0
     estado = comandos[0][0]
+
     while True:
-        console_log(estado, fita, head, passos, speed)
+        console_log(estado, fita, head, passos, speed, modo)
+
+        if modo == "p":
+            input()
 
         if estado in ["halt", "halt-accept", "halt-reject"]:
             break
@@ -138,5 +144,6 @@ def turing_machine(entrada, arquivo_de_configuracao, speed=0.05):
 if __name__ == "__main__":
     file_config = sys.argv[1]
     speed = float(sys.argv[2])
-    entrada = input("> ")
-    turing_machine(entrada, file_config, speed)
+    modo = sys.argv[3]
+    entrada = input("Entrada > ")
+    turing_machine(entrada, file_config, modo, speed)
