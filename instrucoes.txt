@@ -1,0 +1,11 @@
+INSTRUÇÕES DE USO:
+
+1 - O programa segue o mesmo padrão dos arquivos do site 'http://morphett.info/turing/turing.html'.
+2 - Deve ser usado Python versão 3.5.2, ou superior, para executar o programa, via linha de comando.
+3 - Para exucutar o programa são necessários os seguintes parâmetros:
+	2.1 - O caminho do arquivo (.txt).
+	2.2 - O tempo de transição dos passos. (Opcional)
+	3.2 - O modo de execução do programa, n em run e s para steps. (Opcional, por default é executado em run)
+	Exemplo: $ python3 turing_machine_structured.py files_for_machine/alan_turing.txt 0.01 n
+4 - Após isso, será solicitado a palavra de entrada.
+5 - Caso deseje ver por steps, basta pressionar a tecla 'Enter'.
