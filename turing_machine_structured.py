@@ -164,11 +164,13 @@ if __name__ == "__main__":
        8. Turing's sequence machine
        9. Universal Turing Machine
       10. 4-state busy beaver
-      """
+"""
 
         exced = [*filter(lambda x: x > 10, map(int, [*files]))]
+        exced.sort()
         for i in exced:
-            menu_string += "%d. %s" % (i, files[str(i)].split("/")[1].replace("_", " ").title()+"\n")
+            name = files[i].split("/")[1].replace("_", " ").replace(".txt", "").title()
+            menu_string += "      %d. %s\n" % (i, name)
 
         return menu_string
 
@@ -194,10 +196,11 @@ if __name__ == "__main__":
     default_files = load(default_files)
     others_files = list({*glob.glob("files_config/*.txt")}.difference({*default_files.values()}))
     for i in range(len(others_files)):
-        default_files[str(11+i)] = others_files[i]
+        default_files[11+i] = others_files[i]
 
     print(menu(default_files))
-    file_config = default_files[int(input("> "))]
+    option = int(input("> "))
+    file_config = default_files[option]
 
     parameter = get_parameter(sys.argv)
     entrada = input("Entrada > ")
