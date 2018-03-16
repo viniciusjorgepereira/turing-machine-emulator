@@ -100,7 +100,6 @@ def console_log(estado, fita, head, passos):
     print(status[2].ljust(0), steps[2].rjust(20))
  
 def clear_screen():        
-    #if estado not in ["halt", "halt-accept", "halt-reject"]:
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def turing_machine(entrada, arquivo_de_configuracao, modo, speed):
@@ -179,16 +178,18 @@ if __name__ == "__main__":
         if len(param) == 1:
             parameter["speed"] = 0.05
             parameter["mode"] = "n"
-        elif len(param) == 2:
-            if param[1].isdigit():
-                parameter["speed"] = float(param[1])
+        else:
+            try:
+            	value = float(param[1])
+            except ValueError:
+            	value = param[1]
+            if type(value) == float:
+                parameter["speed"] = value
                 parameter["mode"] = "n"
             else:
                 parameter["speed"] = 0.05
                 parameter["mode"] = "s"
-        else:
-            parameter["speed"] = param[1]
-            parameter["mode"] = param[2]
+
         return parameter
 
 
@@ -207,6 +208,6 @@ if __name__ == "__main__":
 
     mode = parameter["mode"]
     speed = parameter["speed"]
-    #import pdb; pdb.set_trace()
+
     turing_machine(entrada, file_config, mode, speed)
     
