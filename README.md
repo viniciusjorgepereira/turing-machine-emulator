@@ -27,9 +27,9 @@
 ```
  
 ### Equipe:
-#### [Cássio Eduardo](https://github.com/cassioegc)
-#### [Gabriel Almeida](https://github.com/GabrielAlmeidaAzevedo)
-#### [Geovane Silva](https://github.com/geovanens)
-#### [Marcelo Gabriel](https://github.com/marcelovitorino)
-#### [Sammara Nunes](https://github.com/SamaraRinoa)
-#### [Vinicius Jorge Pereira](https://github.com/viniciusjorgepereira)
+[Cássio Eduardo](https://github.com/cassioegc),
+[Gabriel Almeida](https://github.com/GabrielAlmeidaAzevedo),
+[Geovane Silva](https://github.com/geovanens),
+[Marcelo Gabriel](https://github.com/marcelovitorino),
+[Sammara Nunes](https://github.com/SamaraRinoa),
+[Vinicius Jorge Pereira](https://github.com/viniciusjorgepereira)
