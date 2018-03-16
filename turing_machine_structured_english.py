@@ -1,6 +1,8 @@
 import sys
 import os
 from time import sleep
+import glob
+from pickle import load
 
 def get_commands(archive):
     """
@@ -14,9 +16,9 @@ def get_commands(archive):
 
     commands = [i for i in commands if i != "\n"]
     commands = [i for i in commands if i[0] != ";"]
-    for i in range(len(commands)):
-        if ";" in commands[i]:
-            commands[i] = " ".join(commands[i].split(" ")[:5])
+    for com in range(len(commands)):
+        if ";" in commands[com]:
+            commands[com] = " ".join(commands[com].split(" ")[:5])
 
         commands = [i.replace("\n", "") for i in commands]
 
@@ -252,28 +254,65 @@ def turing_machine(inpt, conf_file, mode, speed):
     return ["".join(tape).strip("_").replace("_", " "), status, steps]
         
 if __name__ == "__main__":
+    def menu(files):
+        menu_string = """
+              -TURINHA-
+      Turing Machine Simulator
+
+      Welcome
+
+      Please select a file configuration
+
+       1. Binary Addition
+       2. Binary Multiplication 
+       3. Binary to decimal
+       4. Palindrome Detector
+       5. Parentheses checker
+       6. Primality test
+       7. Reverse polish boolean calculator
+       8. Turing's sequence machine
+       9. Universal Turing Machine
+      10. 4-state busy beaver
+      """
+
+        exced = [*filter(lambda x: x > 10, map(int, [*files]))]
+        for i in exced:
+            menu_string += "%d. %s" % (i, files[str(i)].split("/")[1].replace("_", " ").title()+"\n")
+
+        return menu_string
+
     def get_parameter(param):
         parameter = {}
-        parameter["file"] = param[1]
-        if len(param) == 2:
+        if len(param) == 1:
             parameter["speed"] = 0.05
             parameter["mode"] = "n"
-        elif len(param) == 4:
-            parameter["speed"] = float(param[2])
-            parameter["mode"] = param[3]
-        elif len(param) == 3 and param[2].isdigit():
-            parameter["speed"] = float(param[2])
-            parameter["mode"] = "n"
+        elif len(param) == 2:
+            if param[2].isdigit():
+                parameter["speed"] = float(param[2])
+                parameter["mode"] = "n"
+            else:
+                parameter["speed"] = 0.05
+                parameter["mode"] = "s"
         else:
-            parameter["speed"] = 0.05
-            parameter["mode"] = param[2]
+            parameter["speed"] = param[2]
+            parameter["mode"] = param[3]
         return parameter
 
+
+    default_files = open("default_files_config.pkl", "rb")
+    default_files = load(default_files)
+    others_files = list({*glob.glob("files_config/*.txt")}.difference({*default_files.values()}))
+    for i in range(len(others_files)):
+        default_files[str(11+i)] = others_files[i]
+
+    print(menu(default_files))
+    file_config = default_files[int(input("> "))]
+
     parameter = get_parameter(sys.argv)
-    inpt = input("Entrada > ")
-    file_config = parameter["file"]
+    input = input("Entrada > ")
+
     mode = parameter["mode"]
     speed = parameter["speed"]
-    
-    turing_machine(inpt, file_config, mode, speed)
+    import pdb; pdb.set_trace()
+    turing_machine(input, file_config, mode, speed)
     
