@@ -32,4 +32,4 @@
 [Geovane Silva](https://github.com/geovanens),
 [Marcelo Gabriel](https://github.com/marcelovitorino),
 [Sammara Nunes](https://github.com/SamaraRinoa),
-[Vinicius Jorge Pereira](https://github.com/viniciusjorgepereira)
+[Vinicius Jorge](https://github.com/viniciusjorgepereira)
