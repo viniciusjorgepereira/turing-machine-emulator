@@ -1,6 +1,6 @@
 from machine import Machine
 
-archive = open("files_for_machine/palindromos.txt")
+archive = open("files_for_machine/kyller.txt")
 transitions = [i.split() for i in archive if i != "\n" and i[0] != ";"]
 
 machine = Machine(transitions[0][0])

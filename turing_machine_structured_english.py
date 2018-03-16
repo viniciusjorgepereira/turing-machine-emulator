@@ -98,13 +98,13 @@ def get_way(statuses, status, read, write):
 
 def write_tape(tape, head, symbol):
     """
+    It writes on the tape
 
+    :param tape: The turing machine's tape
+    :param head: The turing machine' head
+    :param symbol: Symbols that will be written on the tape
 
-    :param tape:
-    :param head:
-    :param symbol:
-
-    :return:
+    :return: none
     """
 
     if symbol != "*":
@@ -127,15 +127,13 @@ def set_tape(tape, head):
         return 1
     return 0
         
-def set_head(way, tape, head):
+def set_head(way):
     """
-
+    Curretly way to head
 
     :param way:
-    :param tape:
-    :param head:
 
-    :return:
+    :return: The representation on the tape
     """
 
     if way == "r":
@@ -147,21 +145,22 @@ def set_head(way, tape, head):
             
 def get_status(status, statuses, read, write, way):
     """
+    It gets the corretly status
 
-    :param status:
-    :param statuses:
-    :param read:
-    :param write:
-    :param way:
+    :param status: The currtle status
+    :param statuses: The statuses of turing machine
+    :param read: The curretly read
+    :param write: The curretly write
+    :param way: The curetly way
 
-    :return:
+    :return: The curretly status
     """
 
     return statuses[status]['mov'][read][write][way]
 
 def console_log(status, tape, head, steps):
     """
-
+    Just a method to make a string of the statuses
 
     :param status:
     :param tape:
@@ -197,20 +196,19 @@ def console_log(status, tape, head, steps):
     print(status[1].center(14), steps[1].rjust(19))
     print(status[2].ljust(0), steps[2].rjust(20))
  
-def clear_screen():        
-    #if estado not in ["halt", "halt-accept", "halt-reject"]:
+def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def turing_machine(inpt, conf_file, mode, speed):
     """
+    The main function
 
-
-    :param inpt:
-    :param conf_file:
+    :param inpt: The input
+    :param conf_file: The curretly test file
     :param mode:
-    :param speed:
+    :param speed: Speed of the information on the screen
 
-    :return:
+    :return: Curretly output
     """
 
     commands = get_commands(conf_file)
@@ -244,7 +242,7 @@ def turing_machine(inpt, conf_file, mode, speed):
         write = get_write(statuses, status, read)
         write_tape(tape, head, write)
         way = get_way(statuses, status, read, write)
-        head += set_head(way, tape, head)
+        head += set_head(way)
         head += set_tape(tape, head)
         
         status = get_status(status, statuses, read, write, way)
@@ -252,7 +250,8 @@ def turing_machine(inpt, conf_file, mode, speed):
         steps += 1
         
     return ["".join(tape).strip("_").replace("_", " "), status, steps]
-        
+
+#Just a way to test some methods
 if __name__ == "__main__":
     def menu(files):
         menu_string = """
