@@ -312,6 +312,5 @@ if __name__ == "__main__":
 
     mode = parameter["mode"]
     speed = parameter["speed"]
-    import pdb; pdb.set_trace()
     turing_machine(input, file_config, mode, speed)
     
