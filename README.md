@@ -1,5 +1,5 @@
 # Turing Machine Emulator
-###### Turinha v2.0
+##### Turinha v2.0
 
 ### INSTRUÇÕES DE USO:
 
